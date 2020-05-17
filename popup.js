@@ -1,26 +1,14 @@
-function status(response) {
-    if (response.status >= 200 && response.status < 300) {
-        return Promise.resolve(response)
-    } else {
-        return Promise.reject(new Error(response.statusText))
-    }
-}
-
-function json(response) {
-    return response.json();
-}
-
 const sendApiRequest = async (url, options) => {
     fetch(url, options)
         .then(function (response) {
-            response.text().then(function (text) {
-                console.log(text);
-                handleApiResponse(text);
+            response.json().then(function (json) {
+                console.log(json);
+                responseJson = json;
             })
         })
 }
 
-const handleLoginRequest = () => {
+const handleLoginButtonEvent = () => {
     const txtEmailValue = document.getElementById('txtEmailLogin').value;
     const txtPasswordValue = document.getElementById('txtPasswordLogin').value;
 
@@ -31,26 +19,31 @@ const handleLoginRequest = () => {
 
     const options = {
         method: 'POST',
-        body: reqBody,
+        body: JSON.stringify(reqBody),
         headers: {
-            // 'Origin': '*',
-            // 'Host': '*',
-            // 'Accept-Language': 'en-US',
-            // 'Connection': 'keep-alive',
-            // 'User-Agent': '*',
             'Allow-Control-Allow-Origin': '*',
             'Access-Control-Allow-Headers': '*',
-            // 'Content-Type': 'application/json',
-            // 'Accept': '*/*',
+            'Content-Type': 'application/json',
         },
         mode: 'cors'
     };
 
-    console.log(reqBody);
-    sendApiRequest('https://us-central1-eba-restaurant-finder.cloudfunctions.net/api/login', options);
+    const url = 'https://us-central1-eba-restaurant-finder.cloudfunctions.net/api/login';
+
+    fetch(url, options)
+        .then(function (response) {
+            response.json().then(function (json) {
+                if (json.token) {
+                    localStorage.setItem('webleash-token', json.token)
+                    localStorage.setItem('webleash-uuid', json.uuid)
+                    showAddWebsitePage();
+                }
+            })
+        })
+
 }
 
-const handleRegisterRequest = () => {
+const handleRegisterButtonEvent = () => {
     const txtFirstNameValue = document.getElementById('txtFirstName').value;
     const txtLastNameValue = document.getElementById('txtLastName').value;
     const txtEmailValue = document.getElementById('txtEmailRegister').value;
@@ -65,81 +58,122 @@ const handleRegisterRequest = () => {
 
     const options = {
         method: 'POST',
-        body: reqBody,
+        body: JSON.stringify(reqBody),
         headers: {
-            // 'Origin': '*',
-            // 'Host': '*',
-            // 'Accept-Language': 'en-US',
-            // 'Connection': 'keep-alive',
-            // 'User-Agent': '*',
             'Allow-Control-Allow-Origin': '*',
             'Access-Control-Allow-Headers': '*',
-            // 'Content-Type': 'application/json',
-            // 'Accept': '*/*',
+            'Content-Type': 'application/json'
         },
         mode: 'cors'
     };
 
-    console.log(reqBody);
-    sendApiRequest('https://us-central1-eba-restaurant-finder.cloudfunctions.net/api/register', options);
+    const url = 'https://us-central1-eba-restaurant-finder.cloudfunctions.net/api/register';
+
+    fetch(url, options)
+        .then(function (response) {
+            response.json().then(function (json) {
+                console.log(json);
+            })
+        })
 }
 
-const handleAddWebsiteRequest = () => {
-    console.log('Here');
-    const txtUuidValue = document.getElementById('txtUuid').value;
-    const txtTypeValue = document.getElementById('txtType').value;
+const handleAddWebsiteButtonEvent = () => {
+    const eventType = document.getElementById('sltType');
+
+    const txtTypeValue = eventType.options[eventType.selectedIndex].text;
     const txtWebsiteValue = document.getElementById('txtWebsite').value;
 
     const reqBody = {
-        uuid: txtUuidValue,
+        uuid: localStorage.getItem('webleash-uuid'),
         type: txtTypeValue,
         website: txtWebsiteValue
     };
 
     const options = {
         method: 'POST',
-        body: reqBody,
+        body: JSON.stringify(reqBody),
         headers: {
-            // 'Origin': '*',
-            // 'Host': '*',
-            // 'Accept-Language': 'en-US',
-            // 'Connection': 'keep-alive',
-            // 'User-Agent': '*',
             'Allow-Control-Allow-Origin': '*',
             'Access-Control-Allow-Headers': '*',
-            // 'Content-Type': 'application/json',
-            // 'Accept': '*/*',
-            'authtoken': 'eyJhbGciOiJSUzI1NiIsImtpZCI6ImY1YzlhZWJlMjM0ZGE2MDE2YmQ3Yjk0OTE2OGI4Y2Q1YjRlYzllZWIiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vZWJhLXJlc3RhdXJhbnQtZmluZGVyIiwiYXVkIjoiZWJhLXJlc3RhdXJhbnQtZmluZGVyIiwiYXV0aF90aW1lIjoxNTg5NTc5OTY4LCJ1c2VyX2lkIjoiTWwxZU1kZHpzcmJVa0FxWm5EZzhKaVE1cHZVMiIsInN1YiI6Ik1sMWVNZGR6c3JiVWtBcVpuRGc4SmlRNXB2VTIiLCJpYXQiOjE1ODk1Nzk5NjgsImV4cCI6MTU4OTU4MzU2OCwiZW1haWwiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbInRlc3RAZXhhbXBsZS5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.gNI3p6_KSH5ZzXu-WPDbUMbEQ41kW5vzcNSO9OGCjUbsd3c9lf8VkKG41s-DernNZBspyQdsBgXqOYSXBXWFUuzNQ4HkqG4IVLTB_2LT28Ey-rQaoIkyWTmzc5d_tQsvNazfAmPMGeskPbzYilR-awv1YvAKZ8MKmjerxqh0nn4I3qBw_IT1-iCogQgDl7PL4Geag_jG7OOxI8CGL22Fzrw_Drh7PUzQCc6VBadTAcoQGZDG0q6Xvj_wFhS6dwNDk-kFB0EVX3aZiL9inAXaA2hx035lWJJodKTVRMZkCl4hoCbSIkDLaAxF-e5aHgILIL2TmpnqVRJ-75jJ3L8QGg'
+            'Content-Type': 'application/json',
+            'authtoken': localStorage.getItem('webleash-token')
         },
         mode: 'cors'
     };
 
-    console.log(reqBody);
-    sendApiRequest('https://us-central1-eba-restaurant-finder.cloudfunctions.net/api/addBookmark', options);
+    const url = 'https://us-central1-eba-restaurant-finder.cloudfunctions.net/api/addBookmark';
+
+    fetch(url, options)
+        .then(function (response) {
+            response.json().then(function (json) {
+                console.log(json);
+            })
+        })
 }
 
-const showLoginForm = () => {
+const showLoginPage = () => {
     document.getElementById('divLoginForm').style.display = 'block';
     document.getElementById('divRegisterForm').style.display = 'none';
     document.getElementById('divAddWebsiteForm').style.display = 'none';
+
+    document.getElementById('spnRadioLogin').style.display = 'block';
+    document.getElementById('spnRadioRegister').style.display = 'block';
 }
 
-const showRegisterForm = () => {
+const showRegisterPage = () => {
     document.getElementById('divLoginForm').style.display = 'none';
     document.getElementById('divRegisterForm').style.display = 'block';
     document.getElementById('divAddWebsiteForm').style.display = 'none';
+
+    document.getElementById('spnRadioLogin').style.display = 'block';
+    document.getElementById('spnRadioRegister').style.display = 'block';
 }
 
-const showAddWebsiteForm = () => {
+const showAddWebsitePage = () => {
     document.getElementById('divLoginForm').style.display = 'none';
     document.getElementById('divRegisterForm').style.display = 'none';
     document.getElementById('divAddWebsiteForm').style.display = 'block';
+
+    document.getElementById('spnRadioLogin').style.display = 'none';
+    document.getElementById('spnRadioRegister').style.display = 'none';
 }
 
 const handleApiResponse = (responseResult) => {
-    document.getElementById('divResult').innerHTML = responseResult;
+    console.log(responseResult);
 }
 
-document.getElementById("btnLoginRequest").onclick = handleLoginRequest;
-document.getElementById("btnRegisterRequest").onclick = handleRegisterRequest;
-document.getElementById("btnAddWebsiteRequest").onclick = handleAddWebsiteRequest;
+const handleLoginApiResponse = (responseJson) => {
+}
+
+const handleRegisterApiResponse = (responseJson) => {
+    // localStorage.setItem('webleash-token', responseJson.token)
+}
+
+const handleSignOutButtonEvent = () => {
+    localStorage.setItem('webleash-token', '');
+    localStorage.setItem('webleash-uuid', '');
+    
+    document.getElementById('divAddWebsiteForm').style.display = 'none';
+    init();
+}
+
+document.getElementById("btnLogin").onclick = handleLoginButtonEvent;
+document.getElementById("btnSignOut").onclick = handleSignOutButtonEvent;
+document.getElementById("btnRegister").onclick = handleRegisterButtonEvent;
+document.getElementById("btnAddWebsite").onclick = handleAddWebsiteButtonEvent;
+
+document.getElementById("rdoLogin").onchange = showLoginPage;
+document.getElementById("rdoRegister").onchange = showRegisterPage;
+
+const init = () => {
+    if (localStorage.getItem('webleash-token') && localStorage.getItem('webleash-token') !== '') {
+        console.log(localStorage.getItem('webleash-token'));
+        showAddWebsitePage();
+    }
+    else {
+        document.getElementById("rdoLogin").checked = true;
+        showLoginPage();
+    }
+}
+
+init();

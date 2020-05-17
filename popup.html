@@ -99,52 +99,22 @@
     <div class="modal-content">
         <p>Easily access Test Extension content</p>
     </div>
-    <div class="modal-icons">
-        <div class="flex-container">
-            <div class="flex">
-                <a href="https://www.google.com" target="_blank">
-                    <i class="fa fa-globe"></i>
-                </a>
-            </div>
-            <div class="flex">
-                <a href="https://www.youtube.com" target="_blank">
-                    <i class="fa fa-youtube"></i>
-                </a>
-            </div>
-            <div class="flex">
-                <a href="https://www.twitter.com" target="_blank">
-                    <i class="fa fa-twitter"></i>
-                </a>
-            </div>
-            <div class="flex">
-                <a href="https://www.facebook.com" target="_blank">
-                    <i class="fa fa-facebook"></i>
-                </a>
-            </div>
-            <div class="flex">
-                <a href="https://www.github.com" target="_blank">
-                    <i class="fa fa-github"></i>
-                </a>
-            </div>
-        </div>
-    </div>
 
     <p>
-        <input type="radio" name="rdoChoice" id="rdoLogin" onchange="showLoginForm()" />&nbsp;Login
-        <input type="radio" name="rdoChoice" id="rdoRegister" onchange="showRegisterForm()" />&nbsp;Register
-        <input type="radio" name="rdoChoice" id="rdoAddWebsite" onchange="showAddWebsiteForm()" />&nbsp;Add Website
+        <span id="spnRadioLogin"><input type="radio" name="rdoChoice" id="rdoLogin" />&nbsp;Login</span>
+        <span id="spnRadioRegister"><input type="radio" name="rdoChoice" id="rdoRegister" />&nbsp;Register</span>
     </p>
 
-    <!-- Login Form -->
+    <!-- Login Screen -->
     <div id="divLoginForm" hidden>
         <label for="txtEmailLogin">Email:</label>
         <input type="text" id="txtEmailLogin" name="txtEmailLogin"><br><br>
         <label for="txtPasswordLogin">Password:</label>
         <input type="text" id="txtPasswordLogin" name="txtPasswordLogin"><br><br>
-        <button id="btnLoginRequest">Login Request</button>
+        <button id="btnLogin">Login</button>
     </div>
 
-    <!-- Register Form -->
+    <!-- Register Screen -->
     <div id="divRegisterForm" hidden>
         <label for="txtFirstName">First Name:</label>
         <input type="text" id="txtFirstName" name="txtFirstName"><br><br>
@@ -154,18 +124,26 @@
         <input type="text" id="txtEmailRegister" name="txtEmailRegister"><br><br>
         <label for="txtPasswordRegister">Password:</label>
         <input type="text" id="txtPasswordRegister" name="txtPasswordRegister"><br><br>
-        <button id="btnRegisterRequest">Register Request</button>
+        <button id="btnRegister">Register</button>
     </div>
 
-    <!-- Add Website Form -->
+    <!-- Add Website Screen -->
     <div id="divAddWebsiteForm" hidden>
-        <label for="txtUuid">UUID:</label>
-        <input type="text" id="txtUuid" name="txtUuid"><br><br>
-        <label for="txtType">Type:</label>
-        <input type="text" id="txtType" name="txtType"><br><br>
+        <label for="sltType">Type:</label>
+
+        <select id="sltType">
+            <option value="social">Social</option>
+            <option value="news">News</option>
+            <option value="weather">Weather</option>
+            <option value="liked">Liked</option>
+        </select>
+
+        <br><br>
         <label for="txtWebsite">Website:</label>
         <input type="text" id="txtWebsite" name="txtWebsite"><br><br>
-        <button id="btnAddWebsiteRequest">Add Website Request</button>
+        <button id="btnAddWebsite">Add Website</button>
+
+        <button id="btnSignOut">Sign Out</button>
     </div>
 
     <div id="divResult"></div>
