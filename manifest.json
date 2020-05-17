@@ -1,12 +1,12 @@
 {
     "manifest_version": 2,
-    "name": "Test Extension",
-    "description": "Test Extension",
+    "name": "Webleash",
+    "description": "Webleash",
     "version": "1.0.0",
     "browser_action": {
         "default_popup": "popup.html"
     },
-    "permissions": ["activeTab", 
+    "permissions": ["tabs", "activeTab", 
         "https://us-central1-eba-restaurant-finder.cloudfunctions.net/api/login", 
         "https://us-central1-eba-restaurant-finder.cloudfunctions.net/api/register",
         "https://us-central1-eba-restaurant-finder.cloudfunctions.net/api/addBookmark"    
