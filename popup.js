@@ -80,8 +80,10 @@ const handleRegisterButtonEvent = () => {
 const handleAddWebsiteButtonEvent = () => {
     const eventType = document.getElementById('sltType');
 
-    const txtTypeValue = eventType.options[eventType.selectedIndex].text;
+    const txtTypeValue = eventType.options[eventType.selectedIndex].value;
     const txtWebsiteValue = document.getElementById('txtWebsite').value;
+
+    console.log(txtTypeValue);
 
     const reqBody = {
         uuid: localStorage.getItem('webleash-uuid'),
