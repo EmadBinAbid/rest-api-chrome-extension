@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Test Extension</title>
+    <title>Webleash</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans" type="text/css">
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
         integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
@@ -13,46 +13,65 @@
 
     <div class="modal-header">
         <h1 class="logo">
-            <img src="images/logo.png" alt="" class="logo-icon"> Test
-            Extension <span class="version">(1.0.0)</span>
+            <img src="images/logo.png" alt="" class="logo-icon"> Webleash
+            <span class="version">(1.0.0)</span>
         </h1>
     </div>>
     <div class="modal-content">
-        <p>Easily access Test Extension content</p>
+        <p></p>
     </div>
 
-    <p>
-        <span id="spnRadioLogin"><input type="radio" name="rdoChoice" id="rdoLogin" />&nbsp;Login</span>
-        <span id="spnRadioRegister"><input type="radio" name="rdoChoice" id="rdoRegister" />&nbsp;Register</span>
-    </p>
+    <div class="typeOptions center">
+        <span id="spnRadioLogin" class="floatBlock">
+            <label>
+                <input type="radio" name="rdoChoice" id="rdoLogin" />Login
+            </label>
+        </span>
+        <span id="spnRadioRegister" class="floatBlock">
+            <label>
+                <input type="radio" name="rdoChoice" id="rdoRegister" />Register
+            </label>
+        </span>
+    </div>
 
     <!-- Login Screen -->
     <div id="divLoginForm" hidden>
-        <label for="txtEmailLogin">Email:</label>
-        <input type="text" id="txtEmailLogin" name="txtEmailLogin"><br><br>
-        <label for="txtPasswordLogin">Password:</label>
-        <input type="text" id="txtPasswordLogin" name="txtPasswordLogin"><br><br>
-        <button id="btnLogin">Login</button>
+        <div class="center">
+            <input type="text" id="txtEmailLogin" name="txtEmailLogin" placeholder="Email"><br>
+        </div>
+        <div class="center">
+            <input type="text" id="txtPasswordLogin" name="txtPasswordLogin" placeholder="Password"><br>
+        </div>
+
+        <div class="center">
+            <button class="button" id="btnLogin">Login</button>
+        </div>
     </div>
 
     <!-- Register Screen -->
     <div id="divRegisterForm" hidden>
-        <label for="txtFirstName">First Name:</label>
-        <input type="text" id="txtFirstName" name="txtFirstName"><br><br>
-        <label for="txtLastName">Last Name:</label>
-        <input type="text" id="txtLastName" name="txtLastName"><br><br>
-        <label for="txtEmailRegister">Email:</label>
-        <input type="text" id="txtEmailRegister" name="txtEmailRegister"><br><br>
-        <label for="txtPasswordRegister">Password:</label>
-        <input type="text" id="txtPasswordRegister" name="txtPasswordRegister"><br><br>
-        <button id="btnRegister">Register</button>
+        <div class="center">
+            <input type="text" id="txtFirstName" name="txtFirstName" placeholder="First Name"><br>
+        </div>
+        <div class="center">
+            <input type="text" id="txtLastName" name="txtLastName" placeholder="Last Name"><br>
+        </div>
+        <div class="center">
+            <input type="text" id="txtEmailRegister" name="txtEmailRegister" placeholder="Email"><br>
+        </div>
+        <div class="center">
+            <input type="text" id="txtPasswordRegister" name="txtPasswordRegister" placeholder="Password"><br>
+        </div>
+        <div class="center">
+            <button class="button" id="btnRegister">Register</button>
+        </div>
     </div>
 
     <!-- Add Website Screen -->
     <div id="divAddWebsiteForm" hidden>
         <label for="sltType">Type:</label>
 
-        <select id="sltType">
+        <select class="dropmenu" id="sltType">
             <option value="social">Social</option>
             <option value="news">News</option>
             <option value="weather">Weather</option>
@@ -60,11 +79,12 @@
         </select>
 
         <br><br>
-        <label for="txtWebsite">Website:</label>
-        <input type="text" id="txtWebsite" name="txtWebsite"><br><br>
-        <button id="btnAddWebsite">Add Website</button>
+        <div class="center">
+            <button class="button" id="btnAddWebsite">Add Website</button>
+        </div>
 
-        <button id="btnSignOut">Sign Out</button>
+        <br>
+        <button class="button" id="btnSignOut">Sign Out</button>
     </div>
 
     <div id="divResult"></div>
