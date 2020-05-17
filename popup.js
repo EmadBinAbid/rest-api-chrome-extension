@@ -78,39 +78,42 @@ const handleRegisterButtonEvent = () => {
 }
 
 const handleAddWebsiteButtonEvent = () => {
-    const eventType = document.getElementById('sltType');
+    chrome.tabs.query({
+        active: true,
+        currentWindow: true
+    }, function (tabs) {
+        const eventType = document.getElementById('sltType');
 
-    const txtTypeValue = eventType.options[eventType.selectedIndex].value;
-    const txtWebsiteValue = document.getElementById('txtWebsite').value;
+        const txtTypeValue = eventType.options[eventType.selectedIndex].value;
+        const txtWebsiteValue = tabs[0].url;
 
-    console.log(txtTypeValue);
+        const reqBody = {
+            uuid: localStorage.getItem('webleash-uuid'),
+            type: txtTypeValue,
+            website: txtWebsiteValue
+        };
 
-    const reqBody = {
-        uuid: localStorage.getItem('webleash-uuid'),
-        type: txtTypeValue,
-        website: txtWebsiteValue
-    };
+        const options = {
+            method: 'POST',
+            body: JSON.stringify(reqBody),
+            headers: {
+                'Allow-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': '*',
+                'Content-Type': 'application/json',
+                'authtoken': localStorage.getItem('webleash-token')
+            },
+            mode: 'cors'
+        };
 
-    const options = {
-        method: 'POST',
-        body: JSON.stringify(reqBody),
-        headers: {
-            'Allow-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Headers': '*',
-            'Content-Type': 'application/json',
-            'authtoken': localStorage.getItem('webleash-token')
-        },
-        mode: 'cors'
-    };
+        const url = 'https://us-central1-eba-restaurant-finder.cloudfunctions.net/api/addBookmark';
 
-    const url = 'https://us-central1-eba-restaurant-finder.cloudfunctions.net/api/addBookmark';
-
-    fetch(url, options)
-        .then(function (response) {
-            response.json().then(function (json) {
-                console.log(json);
+        fetch(url, options)
+            .then(function (response) {
+                response.json().then(function (json) {
+                    console.log(json);
+                })
             })
-        })
+    });
 }
 
 const showLoginPage = () => {
@@ -154,7 +157,7 @@ const handleRegisterApiResponse = (responseJson) => {
 const handleSignOutButtonEvent = () => {
     localStorage.setItem('webleash-token', '');
     localStorage.setItem('webleash-uuid', '');
-    
+
     document.getElementById('divAddWebsiteForm').style.display = 'none';
     init();
 }
