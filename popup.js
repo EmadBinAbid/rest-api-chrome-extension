@@ -9,6 +9,9 @@ const sendApiRequest = async (url, options) => {
 }
 
 const handleLoginButtonEvent = () => {
+    document.getElementById('divLoader').hidden = false;
+    document.getElementById('divMessage').innerHTML = '';
+
     const txtEmailValue = document.getElementById('txtEmailLogin').value;
     const txtPasswordValue = document.getElementById('txtPasswordLogin').value;
 
@@ -33,10 +36,15 @@ const handleLoginButtonEvent = () => {
     fetch(url, options)
         .then(function (response) {
             response.json().then(function (json) {
+                document.getElementById('divLoader').hidden = true;
                 if (json.token) {
                     localStorage.setItem('webleash-token', json.token)
                     localStorage.setItem('webleash-uuid', json.uuid)
                     showAddWebsitePage();
+                }
+                else {
+                    document.getElementById('divMessage').innerHTML = json.message;
+                    document.getElementById('divMessage').style.color = '#ff0000';
                 }
             })
         })
@@ -44,6 +52,9 @@ const handleLoginButtonEvent = () => {
 }
 
 const handleRegisterButtonEvent = () => {
+    document.getElementById('divLoader').hidden = false;
+    document.getElementById('divMessage').innerHTML = '';
+
     const txtFirstNameValue = document.getElementById('txtFirstName').value;
     const txtLastNameValue = document.getElementById('txtLastName').value;
     const txtEmailValue = document.getElementById('txtEmailRegister').value;
@@ -71,13 +82,24 @@ const handleRegisterButtonEvent = () => {
 
     fetch(url, options)
         .then(function (response) {
+            document.getElementById('divLoader').hidden = true;
             response.json().then(function (json) {
-                console.log(json);
+                if (json.message) {
+                    document.getElementById('divMessage').innerHTML = json.message;
+                    document.getElementById('divMessage').style.color = '#00ff00';
+                }
+                else {
+                    document.getElementById('divMessage').innerHTML = json.message;
+                    document.getElementById('divMessage').style.color = '#ff0000';
+                }
             })
         })
 }
 
 const handleAddWebsiteButtonEvent = () => {
+    document.getElementById('divLoader').hidden = false;
+    document.getElementById('divMessage').innerHTML = '';
+
     chrome.tabs.query({
         active: true,
         currentWindow: true
@@ -110,37 +132,43 @@ const handleAddWebsiteButtonEvent = () => {
         fetch(url, options)
             .then(function (response) {
                 response.json().then(function (json) {
-                    console.log(json);
+                    document.getElementById('divLoader').hidden = true;
+                    if (json.message) {
+                        document.getElementById('divMessage').innerHTML = json.message;
+                        document.getElementById('divMessage').style.color = '#00ff00';
+                    }
+                    else {
+                        document.getElementById('divMessage').innerHTML = json.message;
+                        document.getElementById('divMessage').style.color = '#ff0000';
+                    }
                 })
             })
     });
 }
 
 const showLoginPage = () => {
-    document.getElementById('divLoginForm').style.display = 'block';
-    document.getElementById('divRegisterForm').style.display = 'none';
-    document.getElementById('divAddWebsiteForm').style.display = 'none';
+    document.getElementById('divLoginForm').hidden = false;
+    document.getElementById('divRegisterForm').hidden = true;
+    document.getElementById('divAddWebsiteForm').hidden = true;
 
-    document.getElementById('spnRadioLogin').style.display = 'block';
-    document.getElementById('spnRadioRegister').style.display = 'block';
+    document.getElementById('divMessage').innerHTML = '';
 }
 
 const showRegisterPage = () => {
-    document.getElementById('divLoginForm').style.display = 'none';
-    document.getElementById('divRegisterForm').style.display = 'block';
-    document.getElementById('divAddWebsiteForm').style.display = 'none';
+    console.log('in tegister');
+    document.getElementById('divLoginForm').hidden = true;
+    document.getElementById('divRegisterForm').hidden = false;
+    document.getElementById('divAddWebsiteForm').hidden = true;
 
-    document.getElementById('spnRadioLogin').style.display = 'block';
-    document.getElementById('spnRadioRegister').style.display = 'block';
+    document.getElementById('divMessage').innerHTML = '';
 }
 
 const showAddWebsitePage = () => {
-    document.getElementById('divLoginForm').style.display = 'none';
-    document.getElementById('divRegisterForm').style.display = 'none';
-    document.getElementById('divAddWebsiteForm').style.display = 'block';
+    document.getElementById('divLoginForm').hidden = true;
+    document.getElementById('divRegisterForm').hidden = true;
+    document.getElementById('divAddWebsiteForm').hidden = false;
 
-    document.getElementById('spnRadioLogin').style.display = 'none';
-    document.getElementById('spnRadioRegister').style.display = 'none';
+    document.getElementById('divMessage').innerHTML = '';
 }
 
 const handleApiResponse = (responseResult) => {
@@ -158,7 +186,7 @@ const handleSignOutButtonEvent = () => {
     localStorage.setItem('webleash-token', '');
     localStorage.setItem('webleash-uuid', '');
 
-    document.getElementById('divAddWebsiteForm').style.display = 'none';
+    document.getElementById('divAddWebsiteForm').hidden = true;
     init();
 }
 
@@ -167,8 +195,8 @@ document.getElementById("btnSignOut").onclick = handleSignOutButtonEvent;
 document.getElementById("btnRegister").onclick = handleRegisterButtonEvent;
 document.getElementById("btnAddWebsite").onclick = handleAddWebsiteButtonEvent;
 
-document.getElementById("rdoLogin").onchange = showLoginPage;
-document.getElementById("rdoRegister").onchange = showRegisterPage;
+document.getElementById("rdoLogin").onclick = showLoginPage;
+document.getElementById("rdoRegister").onclick = showRegisterPage;
 
 const init = () => {
     if (localStorage.getItem('webleash-token') && localStorage.getItem('webleash-token') !== '') {
@@ -176,7 +204,6 @@ const init = () => {
         showAddWebsitePage();
     }
     else {
-        document.getElementById("rdoLogin").checked = true;
         showLoginPage();
     }
 }
