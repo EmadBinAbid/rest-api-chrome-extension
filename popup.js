@@ -31,7 +31,8 @@ const handleLoginButtonEvent = () => {
         mode: 'cors'
     };
 
-    const url = 'https://us-central1-eba-restaurant-finder.cloudfunctions.net/api/login';
+    // const url = 'https://us-central1-eba-restaurant-finder.cloudfunctions.net/api/login';
+    const url = 'https://us-central1-webleash-5c72c.cloudfunctions.net/api/login';
 
     fetch(url, options)
         .then(function (response) {
@@ -39,7 +40,7 @@ const handleLoginButtonEvent = () => {
                 document.getElementById('divLoader').hidden = true;
                 if (json.token) {
                     localStorage.setItem('webleash-token', json.token)
-                    localStorage.setItem('webleash-uuid', json.uuid)
+                    // localStorage.setItem('webleash-uuid', json.uuid)
                     showAddWebsitePage();
                 }
                 else {
@@ -78,7 +79,8 @@ const handleRegisterButtonEvent = () => {
         mode: 'cors'
     };
 
-    const url = 'https://us-central1-eba-restaurant-finder.cloudfunctions.net/api/register';
+    // const url = 'https://us-central1-eba-restaurant-finder.cloudfunctions.net/api/register';
+    const url = 'https://us-central1-webleash-5c72c.cloudfunctions.net/api/register'
 
     fetch(url, options)
         .then(function (response) {
@@ -110,7 +112,6 @@ const handleAddWebsiteButtonEvent = () => {
         const txtWebsiteValue = tabs[0].url;
 
         const reqBody = {
-            uuid: localStorage.getItem('webleash-uuid'),
             type: txtTypeValue,
             website: txtWebsiteValue
         };
@@ -127,7 +128,8 @@ const handleAddWebsiteButtonEvent = () => {
             mode: 'cors'
         };
 
-        const url = 'https://us-central1-eba-restaurant-finder.cloudfunctions.net/api/addBookmark';
+        // const url = 'https://us-central1-eba-restaurant-finder.cloudfunctions.net/api/addBookmark';
+        const url = 'https://us-central1-webleash-5c72c.cloudfunctions.net/api/addBookmark';
 
         fetch(url, options)
             .then(function (response) {
@@ -184,7 +186,7 @@ const handleRegisterApiResponse = (responseJson) => {
 
 const handleSignOutButtonEvent = () => {
     localStorage.setItem('webleash-token', '');
-    localStorage.setItem('webleash-uuid', '');
+    // localStorage.setItem('webleash-uuid', '');
 
     document.getElementById('divAddWebsiteForm').hidden = true;
     init();
